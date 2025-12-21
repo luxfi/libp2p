@@ -1,6 +1,6 @@
 module github.com/libp2p/go-libp2p
 
-go 1.24.6
+go 1.25.5
 
 retract v0.26.1 // Tag was applied incorrectly due to a bug in the release workflow.
 
@@ -8,6 +8,7 @@ retract v0.36.0 // Accidentally modified the tag.
 
 require (
 	github.com/benbjohnson/clock v1.3.5
+	github.com/cloudflare/circl v1.6.1
 	github.com/davidlazar/go-crypto v0.0.0-20200604182044-b73af7476f6c
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.0
 	github.com/flynn/noise v1.1.0
@@ -70,7 +71,6 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/google/uuid v1.6.0 // indirect
