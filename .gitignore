@@ -4,3 +4,7 @@
 *.sqlog
 *.qlog.zst
 *.sqlog.zst
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+QWEN.md
