@@ -14,7 +14,7 @@ const (
 )
 
 type webtransportStream struct {
-	*webtransport.Stream
+	webtransport.Stream
 	wsess *webtransport.Session
 }
 
@@ -29,7 +29,7 @@ func (s webtransportStream) RemoteAddr() net.Addr {
 }
 
 type stream struct {
-	*webtransport.Stream
+	webtransport.Stream
 }
 
 var _ network.MuxedStream = stream{}
@@ -37,7 +37,7 @@ var _ network.MuxedStream = stream{}
 func (s stream) Read(b []byte) (n int, err error) {
 	n, err = s.Stream.Read(b)
 	if err != nil {
-		var streamErr *webtransport.StreamError
+		var streamErr webtransport.StreamError
 		if errors.As(err, &streamErr) {
 			err = &network.StreamError{
 				ErrorCode:      0,
@@ -52,7 +52,7 @@ func (s stream) Read(b []byte) (n int, err error) {
 func (s stream) Write(b []byte) (n int, err error) {
 	n, err = s.Stream.Write(b)
 	if err != nil {
-		var streamErr *webtransport.StreamError
+		var streamErr webtransport.StreamError
 		if errors.As(err, &streamErr) {
 			err = &network.StreamError{
 				ErrorCode:      0,

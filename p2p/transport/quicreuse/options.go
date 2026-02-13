@@ -6,7 +6,6 @@ import (
 	"net"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/quic-go/quic-go"
 )
 
 type Option func(*ConnManager) error
@@ -42,8 +41,8 @@ func DisableReuseport() Option {
 }
 
 // ConnContext sets the context for all connections accepted by listeners. This doesn't affect the
-// context for dialed connections. To reject a connection, return a non nil error.
-func ConnContext(f func(ctx context.Context, clientInfo *quic.ClientInfo) (context.Context, error)) Option {
+// context for dialed connections.
+func ConnContext(f func(ctx context.Context) context.Context) Option {
 	return func(m *ConnManager) error {
 		if m.connContext != nil {
 			return errors.New("cannot set ConnContext more than once")

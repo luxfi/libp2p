@@ -13,7 +13,7 @@ import (
 )
 
 type conn struct {
-	quicConn  *quic.Conn
+	quicConn  quic.Connection
 	transport *transport
 	scope     network.ConnManagementScope
 

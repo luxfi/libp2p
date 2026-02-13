@@ -41,7 +41,7 @@ func getTLSConf(key ic.PrivKey, start, end time.Time) (*tls.Config, error) {
 }
 
 // generateCert generates certs deterministically based on the `key` and start
-// time passed in. Uses `golang.org/x/crypto/hkdf`.
+// time passed in. Uses `crypto/hkdf`.
 func generateCert(key ic.PrivKey, start, end time.Time) (*x509.Certificate, *ecdsa.PrivateKey, error) {
 	keyBytes, err := key.Raw()
 	if err != nil {

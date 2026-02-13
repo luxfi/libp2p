@@ -816,7 +816,7 @@ func waitForAddrChangeEvent(ctx context.Context, sub event.Subscription, t *test
 }
 
 // updatedAddrsEqual is a helper to check whether two lists of
-// event.UpdatedAddress have the same contents, ignoring ordering.
+// event.UpdatedAddress have the same contents, ignoring utils.
 func updatedAddrsEqual(a, b []event.UpdatedAddress) bool {
 	if len(a) != len(b) {
 		return false
