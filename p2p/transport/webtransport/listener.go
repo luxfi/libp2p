@@ -44,7 +44,7 @@ type listener struct {
 	queue chan tpt.CapableConn
 
 	mx           sync.Mutex
-	pendingConns map[quic.Connection]*negotiatingConn
+	pendingConns map[*quic.Conn]*negotiatingConn
 }
 
 var _ tpt.Listener = &listener{}
@@ -64,19 +64,21 @@ func newListener(reuseListener quicreuse.Listener, t *transport, isStaticTLSConf
 		addr:            reuseListener.Addr(),
 		multiaddr:       localMultiaddr,
 		server: webtransport.Server{
-			H3: http3.Server{
-				ConnContext: func(ctx context.Context, c quic.Connection) context.Context {
+			H3: &http3.Server{
+				ConnContext: func(ctx context.Context, c *quic.Conn) context.Context {
 					return context.WithValue(ctx, connKey{}, c)
 				},
+				EnableDatagrams: true,
 			},
 			CheckOrigin: func(_ *http.Request) bool { return true },
 		},
-		pendingConns: make(map[quic.Connection]*negotiatingConn),
+		pendingConns: make(map[*quic.Conn]*negotiatingConn),
 	}
 	ln.ctx, ln.ctxCancel = context.WithCancel(context.Background())
 	mux := http.NewServeMux()
 	mux.HandleFunc(webtransportHTTPEndpoint, ln.httpHandler)
 	ln.server.H3.Handler = mux
+	webtransport.ConfigureHTTP3Server(ln.server.H3)
 	go func() {
 		defer close(ln.serverClosed)
 		for {
@@ -96,7 +98,7 @@ func newListener(reuseListener quicreuse.Listener, t *transport, isStaticTLSConf
 	return ln, nil
 }
 
-func (l *listener) startHandshake(conn quic.Connection) error {
+func (l *listener) startHandshake(conn *quic.Conn) error {
 	ctx, cancel := context.WithTimeout(l.ctx, handshakeTimeout)
 	stopHandshakeTimeout := context.AfterFunc(ctx, func() {
 		log.Debug("failed to handshake on conn", "remote_addr", conn.RemoteAddr())
@@ -113,7 +115,7 @@ func (l *listener) startHandshake(conn quic.Connection) error {
 		return ctx.Err()
 	}
 	l.pendingConns[conn] = &negotiatingConn{
-		Connection:           conn,
+		Conn:                 conn,
 		ctx:                  ctx,
 		cancel:               cancel,
 		stopHandshakeTimeout: stopHandshakeTimeout,
@@ -121,11 +123,11 @@ func (l *listener) startHandshake(conn quic.Connection) error {
 	return nil
 }
 
-// negotiatingConn is a wrapper around a quic.Connection that lets us wrap it in
+// negotiatingConn is a wrapper around a *quic.Conn that lets us wrap it in
 // our own context for the duration of the upgrade process. Upgrading a quic
 // connection to an h3 connection to a webtransport session.
 type negotiatingConn struct {
-	quic.Connection
+	*quic.Conn
 	ctx    context.Context
 	cancel context.CancelFunc
 	// stopHandshakeTimeout is a function that stops triggering the handshake timeout. Returns true if the handshake timeout was not triggered.
@@ -225,7 +227,7 @@ func (l *listener) httpHandlerWithConnScope(w http.ResponseWriter, r *http.Reque
 		sess.CloseWithError(1, "")
 		return errors.New("invalid context")
 	}
-	qconn := connVal.(quic.Connection)
+	qconn := connVal.(*quic.Conn)
 
 	l.mx.Lock()
 	nconn, ok := l.pendingConns[qconn]

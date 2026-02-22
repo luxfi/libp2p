@@ -4,6 +4,8 @@
 *.sqlog
 *.qlog.zst
 *.sqlog.zst
+go.work
+go.work.sum
 AGENTS.md
 CLAUDE.md
 GEMINI.md

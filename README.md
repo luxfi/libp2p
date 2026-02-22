@@ -64,7 +64,10 @@ go-libp2p is MIT-licensed open source software. We welcome contributions big and
 Guidelines:
 
 - read the [libp2p spec](https://github.com/libp2p/specs)
-- ask questions or talk about things in our [discussion forums](https://discuss.libp2p.io), or open an [issue](https://github.com/libp2p/go-libp2p/issues) for bug reports, or #libp2p-implementers on [Filecoin slack](https://filecoin.io/slack).
+- for general questions, use our [discussion forum](https://github.com/libp2p/go-libp2p/discussions)
+- for bug reports, open an [issue](https://github.com/libp2p/go-libp2p/issues)
+- for development questions of go-libp2p itself, please join the [mailing list](mailto:go+subscribe@libp2p.io)
+- chat at [#libp2p on Libera Chat](https://web.libera.chat/gamja/?channel=#libp2p)
 - ensure you are able to contribute (no legal issues please -- we use the DCO)
 - get in touch with @libp2p/go-libp2p-maintainers about how best to contribute
 - No drive-by contributions seeking to collect airdrops.
@@ -129,7 +132,6 @@ informed by Go's own [security policy](https://go.dev/doc/security/policy).
 Some notable users of go-libp2p are:
 - [Kubo](https://github.com/ipfs/kubo) - The original Go implementation of IPFS
 - [Lotus](https://github.com/filecoin-project/lotus) - An implementation of the Filecoin protocol
-- [Drand](https://github.com/drand/drand) - A distributed random beacon daemon
 - [Prysm](https://github.com/prysmaticlabs/prysm) - An Ethereum Beacon Chain consensus client built by [Prysmatic Labs](https://prysmaticlabs.com/)
 - [Berty](https://github.com/berty/berty) - An open, secure, offline-first, peer-to-peer and zero trust messaging app.
 - [Wasp](https://github.com/iotaledger/wasp) - A node that runs IOTA Smart Contracts built by the [IOTA Foundation](https://www.iota.org/)
