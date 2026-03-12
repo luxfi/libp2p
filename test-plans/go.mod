@@ -1,6 +1,6 @@
 module github.com/libp2p/go-libp2p/test-plans/m/v2
 
-go 1.26
+go 1.26.1
 
 replace github.com/libp2p/go-libp2p => ../
 
